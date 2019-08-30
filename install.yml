@@ -8,18 +8,17 @@
 
 - hosts: app
   tasks:
-    - name: Install python setuptools
-      apt: 
-        name: python-setuptools
+    - name: Clone git repository
+      git: 
+        repo: 'https://github.com/Dream-Team-of-Sab/projet-coloc'
+        dest: /usr/src/projet-coloc
+        version: dev
+    - name: Run docker-compose
+      docker_compose:
+        project_src: /usr/src/projet-coloc
         state: present
-    - name: Install python pip
-      apt:
-        name: python-pip
-        state: present
-    - name: Install flask for Python
-      pip:
-        name: flask
-        state: present
+        build: yes
+        services: ['app']
 
 - hosts: proxy
   tasks:
@@ -29,7 +28,7 @@
         state: present
     - name: Copy haproxy configuration
       copy:
-        src: haproxy.cfg
+        src: proxy/etc.haproxy.haproxy.cfg
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root
