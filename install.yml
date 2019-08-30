@@ -27,6 +27,13 @@
       apt:
         name: haproxy
         state: present
+    - name: Copy haproxy configuration
+      copy:
+        src: haproxy.cfg
+        dest: /etc/haproxy/haproxy.cfg
+        owner: root
+        group: root
+        mode: '0644'
 
 - hosts: db
   tasks:
