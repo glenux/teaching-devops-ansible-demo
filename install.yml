@@ -21,6 +21,13 @@
         name: flask
         state: present
 
+- hosts: proxy
+  tasks:
+    - name: Install haproxy server
+      apt:
+        name: haproxy
+        state: present
+
 - hosts: db
   tasks:
     - name: Install the postgresql server
