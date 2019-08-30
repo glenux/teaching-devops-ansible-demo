@@ -1,0 +1,15 @@
+
+services:
+  - docker
+
+script:
+  - ansible-playbook -i inventory --limit test install.yml --check
+  - ansible-playbook -i inventory --limit test install.yml 
+  - ansible-playbook -i inventory install.yml --check
+
+deploy:
+  - provider: script 
+    script: ansible-playbook -i inventory install.yml 
+    on: 
+      branch: master
+
