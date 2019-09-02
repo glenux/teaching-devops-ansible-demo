@@ -18,12 +18,9 @@ install:
 
 # Lint playbooks & run on test servers
 script:
-  - cd deploying-dokuwiki 
-  - ansible-lint install.yml  
-  - ansible-playbook -i inventory --limit test install.yml 
-  - cd deploying-docker-compose
-  - ansible-lint install.yml  
-  - ansible-playbook -i inventory --limit test install.yml 
+  - docker cp deploying-dokuwiki control:/app
+  - docker exec -it control bash -c 'cd /app && ansible-lint install.yml'
+  - docker exec -it control bash -c 'cd /app && ansible-playbook -i inventory install.yml'
 
 # Run on real servers on master branch
 deploy:
