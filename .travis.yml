@@ -4,12 +4,18 @@
 # - https://blog.travis-ci.com/2017-11-30-testing-ansible-roles-using-docker-on-travis
 
 language: python
-python: 3.7
+python: "3.7"
+
 services:
   - docker
 
 install:
-  - pip install ansible ansible-lint
+  - docker pull debian:10
+  - cd .travis
+  - docker-compose up -d
+  - docker exec -it control apt-get update
+  - docker exec -it control apt-get install python3-pip
+  - docker exec -it pip3 install ansible ansible-lint
 
 # Lint playbooks & run on test servers
 script:
