@@ -3,19 +3,19 @@
 # - https://www.jeffgeerling.com/blog/testing-ansible-roles-travis-ci-github
 # - https://blog.travis-ci.com/2017-11-30-testing-ansible-roles-using-docker-on-travis
 
-language: python
-python: "3.7"
-
 services:
   - docker
 
 install:
-  - docker pull debian:10
+  - docker pull python:3.7-buster
   - cd .travis
-  - docker-compose up -d
+  - docker-compose run --rm --name control -it python:3.7-buster -d yes >/dev/null
+  - docker-compose run --rm --name server0 -it python:3.7-buster -d yes >/dev/null
+  - docker-compose run --rm --name server1 -it python:3.7-buster -d yes >/dev/null
+  - docker-compose run --rm --name server2 -it python:3.7-buster -d yes >/dev/null
   - docker exec -it control apt-get update
-  - docker exec -it control apt-get install python3-pip
-  - docker exec -it pip3 install ansible ansible-lint
+  - docker exec -it control apt-get install -y python3-pip
+  - docker exec -it control pip3 install ansible ansible-lint
 
 # Lint playbooks & run on test servers
 script:
