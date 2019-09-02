@@ -1,8 +1,11 @@
 
-services:
-  - docker
+language: python
+
+install:
+  - pip install ansible ansible-lint
 
 script:
+  - ansible-lint install.yml  
   - ansible-playbook -i inventory --limit test install.yml --check
   - ansible-playbook -i inventory --limit test install.yml 
   - ansible-playbook -i inventory install.yml --check

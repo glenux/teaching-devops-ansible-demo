@@ -1,0 +1,21 @@
+---
+# tasks file for glenux.app-coloc
+# App
+- name: Clone git repository
+  git: 
+    repo: 'https://github.com/Dream-Team-of-Sab/projet-coloc'
+    dest: /usr/src/projet-coloc
+    version: dev
+
+- name: Pull docker base image
+  shell: docker pull python:3.7-buster
+
+- name: Build docker image
+  shell: docker-compose build -d app
+  args:
+    chdir: /usr/src/projet-coloc
+
+- name: Run docker-compose
+  shell: docker-compose up -d app
+  args:
+    chdir: /usr/src/projet-coloc
