@@ -7,8 +7,8 @@ services:
   - docker
 
 install:
+  - ROOT_DIR="$(pwd)"
   - docker pull python:3.7-buster
-  - cd .travis
   - docker network create travis
   - docker run --rm --network travis --name control -d -it python:3.7-buster yes >/dev/null
   - docker run --rm --network travis --name server0 -d -it python:3.7-buster yes >/dev/null
@@ -18,7 +18,8 @@ install:
 
 # Lint playbooks & run on test servers
 script:
-  - docker cp deploying-dokuwiki control:/app
+  - cd "$ROOT_DIR"
+  - docker cp ./deploying-dokuwiki control:/app
   - docker exec -it control bash -c 'cd /app && ansible-lint install.yml'
   - docker exec -it control bash -c 'cd /app && ansible-playbook -i inventory install.yml'
 
