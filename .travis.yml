@@ -10,12 +10,10 @@ install:
   - docker pull python:3.7-buster
   - cd .travis
   - docker network create travis
-  - docker run --rm --network travis --name control -it python:3.7-buster -d yes >/dev/null
-  - docker run --rm --network travis --name server0 -it python:3.7-buster -d yes >/dev/null
-  - docker run --rm --network travis --name server1 -it python:3.7-buster -d yes >/dev/null
-  - docker run --rm --network travis --name server2 -it python:3.7-buster -d yes >/dev/null
-  - docker exec -it control apt-get update
-  - docker exec -it control apt-get install -y python3-pip
+  - docker run --rm --network travis --name control -d -it python:3.7-buster yes >/dev/null
+  - docker run --rm --network travis --name server0 -d -it python:3.7-buster yes >/dev/null
+  - docker run --rm --network travis --name server1 -d -it python:3.7-buster yes >/dev/null
+  - docker run --rm --network travis --name server2 -d -it python:3.7-buster yes >/dev/null
   - docker exec -it control pip3 install ansible ansible-lint
 
 # Lint playbooks & run on test servers
